@@ -1,0 +1,129 @@
+<UserControl x:Class="XScribeDesktop.PrWalker.PrWalkerView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             Background="#0F1523">
+    <UserControl.Resources>
+        <Style x:Key="PwButton" TargetType="Button">
+            <Setter Property="Padding" Value="8,5"/>
+            <Setter Property="Margin" Value="0,0,6,0"/>
+            <Setter Property="Background" Value="#1A2540"/>
+            <Setter Property="Foreground" Value="#C0CCE0"/>
+            <Setter Property="BorderBrush" Value="#2A3A55"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="FontSize" Value="10"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Cursor" Value="Hand"/>
+        </Style>
+        <Style x:Key="RunStepBtn" TargetType="Button" BasedOn="{StaticResource PwButton}">
+            <Setter Property="Padding" Value="8,2"/>
+            <Setter Property="Margin" Value="0"/>
+            <Setter Property="Foreground" Value="#00E5FF"/>
+            <Setter Property="BorderBrush" Value="#00E5FF"/>
+            <Setter Property="HorizontalAlignment" Value="Right"/>
+        </Style>
+    </UserControl.Resources>
+
+    <Grid Margin="4">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,8">
+            <Button Content="Choose PR tab" Style="{StaticResource PwButton}" Click="ChooseTab_Click"/>
+            <Button Content="Load guide" Style="{StaticResource PwButton}" Click="LoadGuide_Click"/>
+            <Button Content="Run selected ▶" Style="{StaticResource PwButton}" Click="RunSelected_Click"
+                    Foreground="#00E5FF" BorderBrush="#00E5FF"/>
+            <Button Content="Esc = skip anim" Style="{StaticResource PwButton}" Click="Abort_Click"/>
+            <TextBlock x:Name="BoundTabText" Text="No tab bound" Foreground="#6080A0"
+                       FontFamily="Consolas" FontSize="9" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" MaxWidth="180"/>
+        </StackPanel>
+
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="8"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Border Grid.Column="0" BorderBrush="#2A3A55" BorderThickness="1" CornerRadius="6" Padding="6">
+                <DockPanel>
+                    <TextBlock DockPanel.Dock="Top" Text="PRE-RECORDED STEPS  (select one → Run selected)" Foreground="#4A6080"
+                               FontFamily="Consolas" FontSize="9" FontWeight="Bold" Margin="0,0,0,6"/>
+                    <ListBox x:Name="GuideStepsList" Background="Transparent" BorderThickness="0"
+                             ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Border Padding="6" Margin="0,0,0,4" CornerRadius="4"
+                                        Background="#141E33" BorderBrush="#1E2D4A" BorderThickness="1">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        <StackPanel Grid.Column="0">
+                                            <TextBlock Text="{Binding Title}" Foreground="#6080A0" FontSize="9"/>
+                                            <TextBlock Text="{Binding Label}" Foreground="#DCE8F8" FontSize="11" TextWrapping="Wrap"/>
+                                            <TextBlock Foreground="#00E5FF" FontSize="10">
+                                                <TextBlock.Text>
+                                                    <MultiBinding StringFormat="{}{0}  {1}">
+                                                        <Binding Path="FileName"/>
+                                                        <Binding Path="LinesText"/>
+                                                    </MultiBinding>
+                                                </TextBlock.Text>
+                                            </TextBlock>
+                                        </StackPanel>
+                                        <Button Grid.Column="1" Content="▶" Style="{StaticResource RunStepBtn}"
+                                                Tag="{Binding}" Click="RunStepButton_Click"
+                                                ToolTip="Run this step on the bound PR tab"
+                                                VerticalAlignment="Center" Margin="8,0,0,0"/>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </DockPanel>
+            </Border>
+
+            <Border Grid.Column="2" BorderBrush="#FF6B9D" BorderThickness="1" CornerRadius="6" Padding="6">
+                <DockPanel>
+                    <TextBlock DockPanel.Dock="Top" Text="STEPS FROM THE CALL" Foreground="#FF6B9D"
+                               FontFamily="Consolas" FontSize="9" FontWeight="Bold" Margin="0,0,0,6"/>
+                    <ListBox x:Name="CallStepsList" Background="Transparent" BorderThickness="0"
+                             ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Border Padding="6" Margin="0,0,0,4" CornerRadius="4"
+                                        Background="#141E33" BorderBrush="#3A2030" BorderThickness="1">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        <StackPanel Grid.Column="0">
+                                            <TextBlock Text="{Binding TriggerQuote}" Foreground="#6080A0" FontSize="9" TextWrapping="Wrap"/>
+                                            <TextBlock Text="{Binding Label}" Foreground="#DCE8F8" FontSize="11" TextWrapping="Wrap"/>
+                                            <TextBlock Foreground="#00E5FF" FontSize="10"
+                                                       Text="{Binding FileName}"/>
+                                            <TextBlock Text="{Binding LinesText}" Foreground="#4A6080" FontFamily="Consolas" FontSize="9"/>
+                                        </StackPanel>
+                                        <Button Grid.Column="1" Content="▶" Style="{StaticResource RunStepBtn}"
+                                                Tag="{Binding}" Click="RunStepButton_Click"
+                                                VerticalAlignment="Center" Margin="8,0,0,0"/>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </DockPanel>
+            </Border>
+        </Grid>
+
+        <Border Grid.Row="2" Background="#0C1428" BorderBrush="#1E2D4A" BorderThickness="1"
+                CornerRadius="6" Padding="8,5" Margin="0,8,0,0">
+            <TextBlock x:Name="StatusText" Text="Extension: disconnected · click ▶ on a step"
+                       Foreground="#6080A0" FontFamily="Consolas" FontSize="9" TextWrapping="Wrap"/>
+        </Border>
+    </Grid>
+</UserControl>

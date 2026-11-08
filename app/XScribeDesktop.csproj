@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net9.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <UseWindowsForms>true</UseWindowsForms>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <AssemblyName>XScribeDesktop</AssemblyName>
+    <RootNamespace>XScribeDesktop</RootNamespace>
+    <ApplicationIcon>Assets\xscribe-icon.ico</ApplicationIcon>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Resource Include="Assets\xscribe-icon.ico" />
+    <Resource Include="Assets\xscribe-icon.png" />
+  </ItemGroup>
+
+</Project>
